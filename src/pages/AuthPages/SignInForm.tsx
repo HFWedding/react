@@ -46,7 +46,10 @@ export default function SignInForm() {
             if (response.data.status === 'success') {
                 localStorage.setItem('user', JSON.stringify(response.data.user));
                 if (response.data.user.role === 'Admin') {
-                    navigate('/basic-tables');
+                    navigate('/admin', { state: { user: response.data.user } });
+                }
+                else if (response.data.user.role === 'Driver') {
+                    navigate('/404');
                 }
             }
         } catch (error) {

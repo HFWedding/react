@@ -158,9 +158,9 @@ const EditUserModal = ({ isOpen, onClose, userData, onSave }: ModalProps) => {
 
                     <form onSubmit={handleSubmit} className="flex flex-col">
 
-                        <div className="space-y-6">
+                        <div className="-mx-2.5 flex flex-wrap gap-y-5">
 
-                            <div>
+                            <div className="w-full px-2.5 xl:w-1/2">
                                 <Label>First Name<span className="text-error-500">*</span></Label>
                                 <Input
                                     id="first_name"
@@ -172,7 +172,7 @@ const EditUserModal = ({ isOpen, onClose, userData, onSave }: ModalProps) => {
                                 />
                             </div>
 
-                            <div>
+                            <div className="w-full px-2.5 xl:w-1/2">
                                 <Label>Last Name<span className="text-error-500">*</span></Label>
                                 <Input
                                     id="last_name"
@@ -184,7 +184,7 @@ const EditUserModal = ({ isOpen, onClose, userData, onSave }: ModalProps) => {
                                 />
                             </div>
 
-                            <div>
+                            <div className="w-full px-2.5">
                                 <Label>Username<span className="text-error-500">*</span></Label>
                                 <div className="relative">
                                     <Input
@@ -203,7 +203,7 @@ const EditUserModal = ({ isOpen, onClose, userData, onSave }: ModalProps) => {
                                 </div>
                             </div>
 
-                            <div>
+                            <div className="w-full px-2.5">
                                 <Label>Password<span className="text-error-500">*</span></Label>
                                 <div className="relative">
                                     <Input
@@ -227,7 +227,7 @@ const EditUserModal = ({ isOpen, onClose, userData, onSave }: ModalProps) => {
                                 </div>
                             </div>
 
-                            <div>
+                            <div className="w-full px-2.5">
                                 <Label>Email<span className="text-error-500">*</span></Label>
                                 <div className="relative">
                                     <Input
@@ -245,7 +245,7 @@ const EditUserModal = ({ isOpen, onClose, userData, onSave }: ModalProps) => {
                                 </div>
                             </div>
 
-                            <div>
+                            <div className="w-full px-2.5">
                                 <Label>Phone</Label>
                                 <div className="relative">
                                     <Input

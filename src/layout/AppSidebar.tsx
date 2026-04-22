@@ -1,6 +1,8 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Link, useLocation } from "react-router";
 
+import { CircleUserRound, Users } from 'lucide-react';
+
 // Assume these icons are imported from an icon library
 import {
   BoxCubeIcon,
@@ -27,9 +29,14 @@ type NavItem = {
 
 const navItems: NavItem[] = [
     {
-        icon: <UserCircleIcon />,
+        icon: <CircleUserRound />,
         name: "Admin",
         path: "/admin",
+    },
+    {
+        icon: <Users />,
+        name: "Driver",
+        path: "/driver",
     }
 ];
 

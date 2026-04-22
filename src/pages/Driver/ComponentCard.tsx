@@ -4,23 +4,20 @@
     TableCell,
     TableHeader,
     TableRow,
-} from "../ui/table";
-
-import Badge from "../ui/badge/Badge";
-import Input from "../form/input/InputField";
-import MultiSelect from "../form/MultiSelect";
-import ComponentCard from "../common/ComponentCard";
-import DatePicker from "../form/date-picker.tsx";
+} from "../../components/ui/table";
+import Badge from "../../components/ui/badge/Badge";
+import Input from "../../components/form/input/InputField";
+import MultiSelect from "../../components/form/MultiSelect";
+import ComponentCard from "../../components/common/ComponentCard";
+import DatePicker from "../../components/form/date-picker.tsx";
 
 import flatpickr from "flatpickr";
 import DateOption = flatpickr.Options.DateOption;
 
 import { useEffect, useState } from 'react';
-import axios from 'axios';
-
-import EditUserModal from './EditUserModal';
-
 import api from '../../api';
+
+import EditModal from './EditModal';
 
 interface User {
     id: number;
@@ -30,6 +27,10 @@ interface User {
     email: string;
     phone: string;
     last_login: string;
+    license_number: string;
+    license_type: string;
+    contact_name: string;
+    contact_phone: string;
     status: string;
 }
 
@@ -77,29 +78,6 @@ const TableOne = () => {
         });
     };
 
-    const filteredData = userList.filter((user) => {
-
-        const userLoginDate = user.last_login ? new Date(user.last_login) : null;
-
-        let matchesDate = true;
-        if (selectedDateFrom && userLoginDate) {
-            matchesDate = matchesDate && userLoginDate >= selectedDateFrom;
-        }
-        if (selectedDateTo && userLoginDate) {
-            matchesDate = matchesDate && userLoginDate <= selectedDateTo;
-        }
-
-        const searchStr = searchTerm.toLowerCase();
-        return (
-            (user.first_name || "").toLowerCase().includes(searchStr) ||
-            (user.last_name || "").toLowerCase().includes(searchStr) ||
-            (user.username || "").toLowerCase().includes(searchStr) ||
-            (user.email || "").toLowerCase().includes(searchStr) ||
-            (user.phone || "").toLowerCase().includes(searchStr) ||
-            (user.last_login || "").toLowerCase().includes(searchStr)
-        );
-    });
-
     const sortedData = [...userList].sort((a, b) => {
         if (!sortConfig) return 0;
 
@@ -126,7 +104,7 @@ const TableOne = () => {
     const fetchUsers = async () => {
 
         try {
-            const response = await api.get('/api/admin', {
+            const response = await api.get('/api/driver', {
                 params: {
                     page: currentPage,
                     per_page: itemsPerPage,
@@ -171,10 +149,10 @@ const TableOne = () => {
         try {
             if (selectedUser) {
                 
-                await api.put(`/api/admin/${selectedUser.id}`, formData);
+                await api.put(`/api/driver/${selectedUser.id}`, formData);
             } else {
                 
-                await api.post('/api/admin', formData);
+                await api.post('/api/driver', formData);
             }
             setIsModalOpen(false);
             fetchUsers();
@@ -239,7 +217,7 @@ const TableOne = () => {
                     <div className="flex flex-wrap items-center gap-3 xl:justify-end">
 
                         <button onClick={handleAddClick} className="inline-flex items-center gap-2 rounded-lg bg-brand-500 px-4 py-2.5 text-sm font-medium text-white shadow-theme-xs hover:bg-brand-600">
-                            Add New Admin
+                            Add New Driver
 
                             <svg className="fill-current" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path fill-rule="evenodd" clip-rule="evenodd" d="M9.2502 4.99951C9.2502 4.5853 9.58599 4.24951 10.0002 4.24951C10.4144 4.24951 10.7502 4.5853 10.7502 4.99951V9.24971H15.0006C15.4148 9.24971 15.7506 9.5855 15.7506 9.99971C15.7506 10.4139 15.4148 10.7497 15.0006 10.7497H10.7502V15.0001C10.7502 15.4143 10.4144 15.7501 10.0002 15.7501C9.58599 15.7501 9.2502 15.4143 9.2502 15.0001V10.7497H5C4.58579 10.7497 4.25 10.4139 4.25 9.99971C4.25 9.5855 4.58579 9.24971 5 9.24971H9.2502V4.99951Z" fill=""></path>
@@ -420,10 +398,10 @@ const TableOne = () => {
                                         >
                                             <div
                                                 className="p-2.5 xl:p-5 cursor-pointer hover:text-primary flex items-center gap-1"
-                                                onClick={() => requestSort('email')}
+                                                onClick={() => requestSort('license_number')}
                                             >
-                                                Email
-                                                {sortConfig?.key === 'email' && (sortConfig.direction === 'asc' ? '↑' : '↓')}
+                                                License Number
+                                                {sortConfig?.key === 'license_number' && (sortConfig.direction === 'asc' ? '↑' : '↓')}
                                             </div>
                                         </TableCell>
                                         <TableCell
@@ -433,10 +411,10 @@ const TableOne = () => {
                                             
                                             <div
                                                 className="p-2.5 xl:p-5 cursor-pointer hover:text-primary flex items-center gap-1"
-                                                onClick={() => requestSort('phone')}
+                                                onClick={() => requestSort('license_type')}
                                             >
-                                                Phone
-                                                {sortConfig?.key === 'phone' && (sortConfig.direction === 'asc' ? '↑' : '↓')}
+                                                License Type
+                                                {sortConfig?.key === 'license_type' && (sortConfig.direction === 'asc' ? '↑' : '↓')}
                                             </div>
                                         </TableCell>
                                         <TableCell
@@ -486,10 +464,10 @@ const TableOne = () => {
                                                 {user.username}
                                             </TableCell>
                                             <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                                                {user.email}
+                                                {user.license_number}
                                             </TableCell>
                                             <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                                                {user.phone}
+                                                {user.license_type}
                                             </TableCell>
                                             <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
                                                 {formatDate(user.last_login)}
@@ -594,7 +572,7 @@ const TableOne = () => {
                 </div>
             </div>
 
-            <EditUserModal
+            <EditModal
                 isOpen={isModalOpen}
                 onClose={() => setIsModalOpen(false)}
                 userData={selectedUser}

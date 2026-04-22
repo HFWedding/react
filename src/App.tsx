@@ -20,8 +20,10 @@ import { ScrollToTop } from "./components/common/ScrollToTop";
 import Home from "./pages/Dashboard/Home";
 
 import axios from 'axios';
-import Admin from "./pages/Tables/BasicTables";
 import ProtectedRoute from "./route/ProtectedRoute";
+
+import Admin from "./components/User/UserComponentCard";
+import Driver from "./pages/Driver/ComponentCard";
 
 axios.defaults.withCredentials = true;
 
@@ -39,7 +41,19 @@ export default function App() {
             <Route
                 path="/admin"
                 element={
-                    <Admin />
+                    <ProtectedRoute allowedRoles={['Admin']}>
+                        <Admin />
+                    </ProtectedRoute>
+                }
+            />
+
+            {/* Admin */}
+            <Route
+                path="/driver"
+                element={
+                    <ProtectedRoute allowedRoles={['Admin']}>
+                        <Driver />
+                    </ProtectedRoute>
                 }
             />
 
